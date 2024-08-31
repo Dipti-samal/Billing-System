@@ -1,0 +1,94 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Item structure
+struct Item {
+    string name;
+    double price;
+};
+
+// Function to display menu and get user choice
+int getMenuChoice() {
+    cout << "\nSupermarket Billing System\n";
+    cout << "1. Add Item\n";
+    cout << "2. Remove Item\n";
+    cout << "3. Generate Bill\n";
+    cout << "4. Exit\n";
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+    return choice;
+}
+
+// Function to add an item
+void addItem(Item items[], int& itemCount) {
+    cout << "Enter item name: ";
+    cin >> items[itemCount].name;
+    cout << "Enter item price: ";
+    cin >> items[itemCount].price;
+    itemCount++;
+}
+
+// Function to remove an item
+void removeItem(Item items[], int& itemCount) {
+    if (itemCount == 0) {
+        cout << "No items to remove.\n";
+        return;
+    }
+    cout << "Enter item name to remove: ";
+    string itemName;
+    cin >> itemName;
+    for (int i = 0; i < itemCount; i++) {
+        if (items[i].name == itemName) {
+            items[i] = items[itemCount - 1];
+            itemCount--;
+            cout << "Item removed successfully.\n";
+            return;
+        }
+    }
+    cout << "Item not found.\n";
+}
+
+// Function to generate bill
+void generateBill(const Item items[], int itemCount) {
+    double total = 0.0;
+    cout << "\nBill Details:\n";
+    cout << setw(20) << left << "Item Name" << setw(10) << right << "Price\n";
+    cout << string(30, '-') << endl;
+    for (int i = 0; i < itemCount; i++) {
+        cout << setw(20) << left << items[i].name << setw(10) << right << items[i].price << endl;
+        total += items[i].price;
+    }
+    cout << string(30, '-') << endl;
+    cout << setw(20) << left << "Total" << setw(10) << right << total << endl;
+}
+
+int main() {
+    const int maxItems = 100;
+    Item items[maxItems];
+    int itemCount = 0;
+
+    while (true) {
+        int choice = getMenuChoice();
+        switch (choice) {
+            case 1:
+                addItem(items, itemCount);
+                break;
+            case 2:
+                removeItem(items, itemCount);
+                break;
+            case 3:
+                generateBill(items, itemCount);
+                break;
+            case 4:
+                cout << "Thank you for using the Supermarket Billing System!\n";
+                return 0;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    }
+}
